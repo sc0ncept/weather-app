@@ -1,0 +1,9 @@
+html {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+body {
+  margin: 1em auto;
+  max-width: 30em;
+  width: 88%;
+}

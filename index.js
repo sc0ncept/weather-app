@@ -1,12 +1,12 @@
 const getTheWeather = function (options) {
 
   const defaults = {
-    apiKey: '859561cd1e0143b19182fe27c1b67328',
+    apiKey: null,
     selector: '#app',
-    convertTemp: true,
-    showIcon: true,
+    convertTemp: false,
+    showIcon: false,
     noWeather: 'Unable to get weather data at this time.',
-    descripton: `It is currently {{weather}} degrees and {{description}} in {{city}}`,
+    description: `It is currently {{temp}} degrees and {{description}} in {{city}}.`,
   }
 
   const settings = Object.assign(defaults, options);
@@ -37,19 +37,35 @@ const getTheWeather = function (options) {
     app.textContent = settings.noWeather;
   }
 
+  const getIcon = function (weather) {
+
+    if (!settings.showIcon) {
+      return;
+    }
+    return `<img src="https://www.weatherbit.io/static/img/icons/${weather.weather.icon}.png" alt="${weather.weather.description}"></img>`
+  }
+
+  const getDescription = function (weather) {
+
+    return settings.description
+      .replace('{{temp}}', sanitizeHTML(celsToFahrenheit(weather.temp).toString()))
+      .replace('{{description}}', sanitizeHTML(weather.weather.description).toLowerCase())
+      .replace('{{city}}', sanitizeHTML(weather.city_name.toString()))
+  }
+
   const renderWeather = function (weather) {
-    console.log(weather);
 
     app.innerHTML = `
       <h2>Current weather in ${sanitizeHTML(weather.city_name)}</h2>
-      <p><img src="https://www.weatherbit.io/static/img/icons/${weather.weather.icon}.png" alt="${weather.weather.description}"></p>
-      <p>It is currently ${sanitizeHTML(celsToFahrenheit(weather.temp).toString())} degrees and ${sanitizeHTML(weather.weather.description).toLowerCase()} in ${sanitizeHTML(weather.city_name)}.</p>
+      <p>${getIcon(weather)}</p>
+      <p>${getDescription(weather)}</p>
       <p>Sunrise: ${sanitizeHTML(weather.sunrise.toString())} | Sunset: ${sanitizeHTML(weather.sunset.toString())}</p>
       `
   }
 
   if (!settings.apiKey) {
     console.warn('Please provide an API key.');
+    renderNoWeather();
     return;
   }
 
@@ -75,7 +91,7 @@ const getTheWeather = function (options) {
       renderWeather(weatherData.data[0]);
     })
     .catch(function (error) {
-      app.textContent = settings.noWeather;
+      renderNoWeather();
       console.warn(error)
     });
 }

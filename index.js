@@ -12,7 +12,6 @@ const getTheWeather = function (options) {
   const settings = Object.assign(defaults, options);
 
   const app = document.querySelector(settings.selector);
-  // const apiKey = '859561cd1e0143b19182fe27c1b67328';
 
   /**
    * Sanitize and encode all HTML in a user-submitted string
@@ -96,4 +95,7 @@ const getTheWeather = function (options) {
     });
 }
 
-getTheWeather();
+getTheWeather({
+  apiKey: '859561cd1e0143b19182fe27c1b67328',
+  showIcon: true,
+});

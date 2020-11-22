@@ -39,9 +39,10 @@ const getTheWeather = function (options) {
   const getIcon = function (weather) {
 
     if (!settings.showIcon) {
-      return;
+      return '';
     }
-    return `<img src="https://www.weatherbit.io/static/img/icons/${weather.weather.icon}.png" alt="${weather.weather.description}"></img>`
+    let html = `<p><img src="https://www.weatherbit.io/static/img/icons/${weather.weather.icon}.png" alt="${weather.weather.description}"></img></p>`;
+    return html;
   }
 
   const getDescription = function (weather) {
@@ -56,7 +57,7 @@ const getTheWeather = function (options) {
 
     app.innerHTML = `
       <h2>Current weather in ${sanitizeHTML(weather.city_name)}</h2>
-      <p>${getIcon(weather)}</p>
+      ${getIcon(weather)}
       <p>${getDescription(weather)}</p>
       <p>Sunrise: ${sanitizeHTML(weather.sunrise.toString())} | Sunset: ${sanitizeHTML(weather.sunset.toString())}</p>
       `

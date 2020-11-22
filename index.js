@@ -15,9 +15,12 @@ const sanitizeHTML = function (str) {
 };
 
 const renderWeather = function (weather) {
+
   app.innerHTML = `
     <h2>${sanitizeHTML(weather.city_name)}</h2>
-    <p>Temp: ${sanitizeHTML(weather.app_temp.toString())} C | Pressure: ${sanitizeHTML(weather.pres.toString())} hPa | Sunrise: ${sanitizeHTML(weather.sunrise.toString())} - Sunset: ${sanitizeHTML(weather.sunset.toString())}</p>
+    <p><img src="https://www.weatherbit.io/static/img/icons/${weather.weather.icon}.png" alt="${weather.weather.description}"></p>
+    <p>Temp: ${sanitizeHTML(weather.temp.toString())} C | Pressure: ${sanitizeHTML(weather.pres.toString())} hPa | Sunrise: ${sanitizeHTML(weather.sunrise.toString())} - Sunset: ${sanitizeHTML(weather.sunset.toString())}</p>
+    <p>It is currently ${sanitizeHTML(weather.temp.toString())} degrees and ${sanitizeHTML(weather.weather.description).toLowerCase()} in ${sanitizeHTML(weather.city_name)}.</p>
     `
 }
 
